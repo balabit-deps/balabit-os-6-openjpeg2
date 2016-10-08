@@ -1,0 +1,58 @@
+openjpeg2 (2.1.0-2.1ubuntu0.1) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: Out-of-bound heap write possible resulting
+    in heap corruption and arbitrary code execution (lp: #1630702)
+    - debian/patches/CVE-2016-8332.patch: fix incrementing of
+      "l_tcp->m_nb_mcc_records" in opj_j2k_read_mcc
+      in src/lib/openjp2/j2k.c.
+    - CVE-2016-8332
+  * SECURITY UPDATE: Integer overflow possible resulting in
+    arbitrary code execution via a crafted JP2 file,
+    triggering out-of-bound read or write (lp: #1630702)
+    - debian/patches/CVE-2016-7163.patch: fix an integer
+      overflow issue in function opj_pi_create_decode of
+      pi.c in src/lib/openjp2/pi.c.
+    - CVE-2016-7163
+
+ -- Nikita Yerenkov-Scott <cooks.go.hungry@gmail.com>  Sat, 08 Oct 2016 16:10:43 +0100
+
+openjpeg2 (2.1.0-2.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Apache 2.4 transition: (Closes: #786333)
+    + d/rules: Added --with apache2.
+    + Drop d/libopenjpip-server.install.
+    + Drop d/libopenjpip-server.prerm.
+    + d/control: Add build-depends on dh-apache2, replace depends on
+      apache2.2-bin by ${misc:Recommends}, add recommends on
+      libapache2-mod-fastcgi.
+    + New d/libopenjpip-server.conf for apache2 fastcgi setup.
+    + Drop d/libopenjpip-server.load.
+    + New d/libopenjpip-server.apache2 to set up the configuration.
+
+ -- Jean-Michel Vourgère <nirgal@debian.org>  Thu, 21 May 2015 23:05:40 +0200
+
+openjpeg2 (2.1.0-2) unstable; urgency=low
+
+  * Install *.pc files. Closes: #762251
+  * Remove cmake-fatal-error export stuff
+  * Fix warnings in d/copyright
+  * Bump Std-Vers to 3.9.6, no changes needed
+  * Fix include path in export file to handle multi-arch install
+    + debian/patches/multiarch_path.patch
+
+ -- Mathieu Malaterre <malat@debian.org>  Tue, 07 Oct 2014 13:14:43 +0200
+
+openjpeg2 (2.1.0-1) unstable; urgency=low
+
+  * New upstream. Closes: #761154, #761155
+  * Rename binary packages to prevent conflicts. Closes: #760874
+  * Remove "Multi-Arch: same" for -dev package. Closes: #760421
+
+ -- Mathieu Malaterre <malat@debian.org>  Thu, 11 Sep 2014 17:40:46 +0200
+
+openjpeg2 (2.0.0-1) unstable; urgency=low
+
+  * New upstream. Closes: #738655.
+
+ -- Mathieu Malaterre <malat@debian.org>  Fri, 23 May 2014 18:23:37 +0200
