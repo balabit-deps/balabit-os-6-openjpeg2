@@ -187,10 +187,9 @@ static int tga_readheader(FILE *fp, unsigned int *bits_per_pixel,
 
 #ifdef OPJ_BIG_ENDIAN
 
-static inline int16_t swap16(int16_t x)
+static inline uint16_t swap16(uint16_t x)
 {
-  return((((u_int16_t)x & 0x00ffU) <<  8) |
-     (((u_int16_t)x & 0xff00U) >>  8));
+    return(((x & 0x00ffU) << 8) | ((x & 0xff00U) >> 8));
 }
 
 #endif
@@ -1436,7 +1435,7 @@ int imagetopgx(opj_image_t * image, const char *outfile) {
 			fprintf(stderr, "ERROR -> failed to open %s for writing\n", name);
 			return 1;
 		}
-    /* dont need name anymore */
+    /* don't need name anymore */
     if( total > 256 ) {
       free(name);
       }
@@ -2858,6 +2857,7 @@ opj_image_t* rawtoimage(const char *filename, opj_cparameters_t *parameters, raw
 			for (i = 0; i < w * h; i++) {
 				if (!fread(&value, 1, 1, f)) {
 					fprintf(stderr,"Error reading raw file. End of file probably reached.\n");
+					fclose(f);
 					return NULL;
 				}
 				image->comps[compno].data[i] = raw_cp->rawSigned?(char)value:value;
@@ -2872,11 +2872,13 @@ opj_image_t* rawtoimage(const char *filename, opj_cparameters_t *parameters, raw
 				unsigned char temp;
 				if (!fread(&temp, 1, 1, f)) {
 					fprintf(stderr,"Error reading raw file. End of file probably reached.\n");
+					fclose(f);
 					return NULL;
 				}
 				value = temp << 8;
 				if (!fread(&temp, 1, 1, f)) {
 					fprintf(stderr,"Error reading raw file. End of file probably reached.\n");
+					fclose(f);
 					return NULL;
 				}
 				value += temp;
@@ -2886,6 +2888,7 @@ opj_image_t* rawtoimage(const char *filename, opj_cparameters_t *parameters, raw
 	}
 	else {
 		fprintf(stderr,"OpenJPEG cannot encode raw components with bit depth higher than 16 bits.\n");
+		fclose(f);
 		return NULL;
 	}
 

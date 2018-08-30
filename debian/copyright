@@ -20,6 +20,7 @@ Files: src/lib/openjpip/query_parser.h
  src/lib/openjpip/dec_clientmsg_handler.h
  src/lib/openjpip/msgqueue_manager.h
  src/lib/openjpip/msgqueue_manager.c
+ .gitignore
 Copyright: 2002-2011, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
  2002-2011, Professor Benoit Macq
  2010-2011, Kaori Hagihara
@@ -203,15 +204,17 @@ Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite c
 License: BSD-2
 
 Files:
- AUTHORS
- CHANGES
+ AUTHORS.md
+ CHANGELOG.md
  CMakeLists.txt
  CTestConfig.cmake
- INSTALL
+ INSTALL.md
  LICENSE
- NEWS
- README
- THANKS
+ NEWS.md
+ README.md
+ THANKS.md
+ appveyor.yml
+ cmake/FindJPYLYZER.cmake
  cmake/CTestCustom.cmake.in
  cmake/EnsureFileInclude.cmake
  cmake/FindFCGI.cmake
@@ -284,7 +287,7 @@ Files:
  src/lib/openjp2/opj_config_private.h.cmake.in
  src/lib/openjp2/t1_luts.h
  tests/CMakeLists.txt
- tests/compare_raw_files.c
+ tests/include_openjpeg.c
  tests/conformance/CMakeLists.txt
  tests/nonregression/CMakeLists.txt
  tests/nonregression/checkmd5refs.cmake
@@ -302,6 +305,27 @@ Files:
  wrapping/java/openjp2/CMakeLists.txt
  wrapping/java/openjp2/org_openJpeg_OpenJPEGJavaDecoder.h
  wrapping/java/openjp2/org_openJpeg_OpenJPEGJavaEncoder.h
+ src/lib/openjp2/opj_malloc.c
+ .travis.yml
+ tools/abi-tracker/compat_report/2.1_to_current/compat_report.html
+ tools/abi-tracker/openjpeg.json
+ tools/ctest_scripts/toolchain-mingw32.cmake
+ tools/ctest_scripts/toolchain-mingw64.cmake
+ tools/ctest_scripts/travis-ci.cmake
+ tools/travis-ci/abi-check.sh
+ tools/travis-ci/install.sh
+ tools/travis-ci/knownfailures-Ubuntu12.04-clang3.4-x86_64-Debug-3rdP-ASan.txt
+ tools/travis-ci/knownfailures-Ubuntu12.04-clang3.9.0-x86_64-Debug-3rdP.txt
+ tools/travis-ci/knownfailures-Ubuntu12.04-clang3.9.0-x86_64-Release-3rdP.txt
+ tools/travis-ci/knownfailures-Ubuntu12.04-gcc4.6.3-i386-Release-3rdP.txt
+ tools/travis-ci/knownfailures-Ubuntu12.04-gcc4.6.4-i386-Release-3rdP.txt
+ tools/travis-ci/knownfailures-Ubuntu14.04-gcc4.8.4-i386-Release-3rdP.txt
+ tools/travis-ci/knownfailures-all.txt
+ tools/travis-ci/knownfailures-windows-vs2010-x86-Release-3rdP.txt
+ tools/travis-ci/knownfailures-windows-vs2015-x64-Release-3rdP.txt
+ tools/travis-ci/knownfailures-windows-vs2015-x86-Release-3rdP.txt
+ tools/travis-ci/run.sh
+ tools/travis-ci/travis_rsa.enc
 Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
  2002-2007, Professor Benoit Macq
  2002-2003, Yannick Verschueren
@@ -330,6 +354,15 @@ Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite c
  2012, CS Systemes d'Information, France
 License: BSD-2
 
+Files: src/bin/common/opj_string.h
+Copyright: Copyright (c) 2015, Matthieu Darbois
+License: BSD-2
+
+Files: src/lib/openjp2/opj_malloc.c
+Copyright: Copyright (c) 2015, Mathieu Malaterre <mathieu.malaterre@gmail.com>
+ Copyright (c) 2015, Matthieu Darbois
+License: BSD-2
+
 Files: src/lib/openjp2/mqc.h
  src/lib/openjp2/mqc.c
 Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
@@ -354,6 +387,9 @@ Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite c
 License: BSD-2
 
 Files: src/lib/openjp2/pi.c
+ src/bin/jp2/convertbmp.c
+ src/bin/jp2/convertpng.c
+ src/bin/jp2/converttif.c
 Copyright: 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
  2002-2007, Professor Benoit Macq
  2001-2003, David Janssens
@@ -709,7 +745,7 @@ License: BSD-2
 
 Files: tests/compare_dump_files.c
  tests/compare_images.c
- tests/compare_raw_images.c
+ tests/compare_raw_files.c
 Copyright: 2011-2012, Centre National d'Etudes Spatiales (CNES), France
 License: BSD-2
 
@@ -853,7 +889,6 @@ Copyright: 1998-2010 Marti Maria Saguer
 License: MIT
 
 Files: thirdparty/include/zconf.h
- thirdparty/include/zconf.h.cmake.msvc
  thirdparty/libz/zutil.h
  thirdparty/libz/trees.c
  thirdparty/libz/trees.h
@@ -878,10 +913,6 @@ Files: thirdparty/libz/gzwrite.c
  thirdparty/libz/gzread.c
  thirdparty/libz/gzguts.h
 Copyright: 2004, 2005, 2010 Mark Adler
-License: ZLIB
-
-Files: thirdparty/libz/minigzip.c
-Copyright: 1995-2006, 2010 Jean-loup Gailly.
 License: ZLIB
 
 Files: thirdparty/libz/inflate.c
@@ -924,10 +955,6 @@ License: ZLIB
 
 Files: thirdparty/libz/inffast.c
 Copyright: 1995-2008, 2010 Mark Adler
-License: ZLIB
-
-Files: thirdparty/libz/example.c
-Copyright: 1995-2006 Jean-loup Gailly.
 License: ZLIB
 
 Files: thirdparty/libtiff/*
@@ -1038,6 +1065,11 @@ License: BSD-2
 
 Files: cmake/FindCPPCHECK.cmake
 Copyright: 2011 Mathieu Malaterre <mathieu.malaterre@gmail.com>
+License: BSD-2
+
+Files: tools/ctest_scripts/toolchain-mingw64.cmake
+ tools/ctest_scripts/toolchain-mingw32.cmake
+Copyright: 2006-2014 Mathieu Malaterre <mathieu.malaterre@voxxl.com>
 License: BSD-2
 
 Files: cmake/FindKAKADU.cmake

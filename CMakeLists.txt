@@ -11,6 +11,9 @@ cmake_minimum_required(VERSION 2.8.2)
 
 if(COMMAND CMAKE_POLICY)
   cmake_policy(SET CMP0003 NEW)
+  if (NOT (${CMAKE_VERSION} VERSION_LESS 3.0))
+    cmake_policy(SET CMP0042 NEW)
+  endif()
 endif()
 
 if(NOT OPENJPEG_NAMESPACE)
@@ -30,7 +33,7 @@ include_regular_expression("^.*$")
 # OPENJPEG version number, useful for packaging and doxygen doc:
 set(OPENJPEG_VERSION_MAJOR 2)
 set(OPENJPEG_VERSION_MINOR 1)
-set(OPENJPEG_VERSION_BUILD 0)
+set(OPENJPEG_VERSION_BUILD 2)
 set(OPENJPEG_VERSION
   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}")
 set(PACKAGE_VERSION
@@ -49,11 +52,13 @@ set(PACKAGE_VERSION
 #   2.0   |  6
 #   2.0.1 |  6
 #   2.1   |  7
+#   2.1.1 |  7
+#   2.1.2 |  7
 # above is the recommendation by the OPJ team. If you really need to override this default,
 # you can specify your own OPENJPEG_SOVERSION at cmake configuration time:
 # cmake -DOPENJPEG_SOVERSION:STRING=42 /path/to/openjpeg
 if(NOT OPENJPEG_SOVERSION)
-  SET(OPENJPEG_SOVERSION 7)
+  set(OPENJPEG_SOVERSION 7)
 endif(NOT OPENJPEG_SOVERSION)
 set(OPENJPEG_LIBRARY_PROPERTIES
   VERSION   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}"
@@ -63,7 +68,7 @@ set(OPENJPEG_LIBRARY_PROPERTIES
 # --------------------------------------------------------------------------
 # Path to additional CMake modules
 set(CMAKE_MODULE_PATH
-    ${CMAKE_SOURCE_DIR}/cmake
+    ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake
     ${CMAKE_MODULE_PATH})
 
 # --------------------------------------------------------------------------
@@ -146,6 +151,11 @@ if(NOT OPENJPEG_INSTALL_PACKAGE_DIR)
   set(OPENJPEG_INSTALL_PACKAGE_DIR "${OPENJPEG_INSTALL_LIB_DIR}/${OPENJPEG_INSTALL_SUBDIR}")
 endif()
 
+if (APPLE)
+	list(APPEND OPENJPEG_LIBRARY_PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${OPENJPEG_INSTALL_LIB_DIR}")
+	option(OPJ_USE_DSYMUTIL "Call dsymutil on binaries after build." OFF)
+endif()
+
 #-----------------------------------------------------------------------------
 # Big endian test:
 include (${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
@@ -154,8 +164,8 @@ TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 #-----------------------------------------------------------------------------
 # Setup file for setting custom ctest vars
 configure_file(
-  ${CMAKE_SOURCE_DIR}/cmake/CTestCustom.cmake.in
-  ${CMAKE_BINARY_DIR}/CTestCustom.cmake
+  ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/CTestCustom.cmake.in
+  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/CTestCustom.cmake
   @ONLY
   )
 
@@ -182,7 +192,7 @@ if(CMAKE_COMPILER_IS_GNUCC)
   # For all builds, make sure openjpeg is std99 compliant:
   # set(CMAKE_C_FLAGS "-Wall -std=c99 ${CMAKE_C_FLAGS}") # FIXME: this setting prevented us from setting a coverage build.
   # Do not use ffast-math for all build, it would produce incorrect results, only set for release:
-  set(CMAKE_C_FLAGS_RELEASE "-ffast-math ${CMAKE_C_FLAGS_RELEASE}")
+  set(OPENJPEG_LIBRARY_COMPILE_OPTIONS ${OPENJPEG_LIBRARY_COMPILE_OPTIONS} "$<$<CONFIG:Release>:-ffast-math>")
 endif()
 
 #-----------------------------------------------------------------------------
@@ -217,6 +227,18 @@ CHECK_INCLUDE_FILE("unistd.h"       HAVE_UNISTD_H)
 include(TestLargeFiles)
 OPJ_TEST_LARGE_FILES(OPJ_HAVE_LARGEFILES)
 
+# Allocating Aligned Memory Blocks
+include(CheckIncludeFiles)
+check_include_files(malloc.h OPJ_HAVE_MALLOC_H)
+include(CheckSymbolExists)
+# _aligned_alloc https://msdn.microsoft.com/en-us/library/8z34s9c6.aspx
+check_symbol_exists(_aligned_malloc malloc.h OPJ_HAVE__ALIGNED_MALLOC)
+# posix_memalign (needs _POSIX_C_SOURCE >= 200112L on Linux)
+set(CMAKE_REQUIRED_DEFINITIONS -D_POSIX_C_SOURCE=200112L)
+check_symbol_exists(posix_memalign stdlib.h OPJ_HAVE_POSIX_MEMALIGN)
+unset(CMAKE_REQUIRED_DEFINITIONS)
+# memalign (obsolete)
+check_symbol_exists(memalign malloc.h OPJ_HAVE_MEMALIGN)
 #-----------------------------------------------------------------------------
 # Build Library
 if(BUILD_JPIP_SERVER)
@@ -228,6 +250,7 @@ if(BUILD_JPIP_SERVER)
   endif()
 endif()
 add_subdirectory(src/lib)
+option(BUILD_LUTS_GENERATOR "Build utility to generate t1_luts.h" OFF)
 
 #-----------------------------------------------------------------------------
 # Build Applications
@@ -261,7 +284,7 @@ configure_file(
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config.h
  @ONLY
  )
- 
+
  configure_file(
  ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/opj_config_private.h.cmake.in
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config_private.h
@@ -283,8 +306,8 @@ if(BUILD_TESTING)
     include(CTest)
 
     # Search openjpeg data needed for the tests
-    # They could be found via svn on the OpenJPEG google code project
-    # svn checkout http://openjpeg.googlecode.com/svn/data (about 70 Mo)
+    # They could be found via git on the OpenJPEG GitHub code project
+    # git clone https://github.com/uclouvain/openjpeg-data.git
     find_path(OPJ_DATA_ROOT README-OPJ-Data
       PATHS $ENV{OPJ_DATA_ROOT} ${CMAKE_SOURCE_DIR}/../data
       NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
@@ -301,8 +324,8 @@ endif()
 #-----------------------------------------------------------------------------
 # install all targets referenced as OPENJPEGTargets
 install(EXPORT OpenJPEGTargets DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
-configure_file( ${OPENJPEG_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
-  ${OPENJPEG_BINARY_DIR}/OpenJPEGConfig.cmake
+configure_file( ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
+  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
   @ONLY
 )
 install( FILES ${OPENJPEG_BINARY_DIR}/OpenJPEGConfig.cmake

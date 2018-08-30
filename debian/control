@@ -1,7 +1,6 @@
 Source: openjpeg2
-Priority: extra
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-XSBC-Original-Maintainer: Debian PhotoTools Maintainers <pkg-phototools-devel@lists.alioth.debian.org>
+Priority: optional
+Maintainer: Debian PhotoTools Maintainers <pkg-phototools-devel@lists.alioth.debian.org>
 Uploaders: Mathieu Malaterre <malat@debian.org>
 Homepage: http://www.openjpeg.org
 Build-Depends: cmake (>= 2.8.2),
@@ -12,12 +11,12 @@ Build-Depends: cmake (>= 2.8.2),
                javahelper (>= 0.37~),
                libcurl4-gnutls-dev | libcurl-ssl-dev,
                libfcgi-dev,
-               liblcms2-dev | liblcms1-dev,
+               liblcms2-dev,
                libpng-dev,
                libtiff-dev,
                libxerces2-java,
                zlib1g-dev
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Section: libs
 Vcs-Browser: http://anonscm.debian.org/viewvc/collab-maint/deb-maint/openjpeg2/trunk/
 Vcs-Svn: svn://anonscm.debian.org/collab-maint/deb-maint/openjpeg2/trunk
@@ -79,6 +78,7 @@ Description: JP3D (JPEG 2000 / Part 10) image compression/decompression library
 
 Package: libopenjp2-7-dbg
 Section: debug
+Priority: extra
 Architecture: any
 Multi-Arch: same
 Depends: libopenjp2-7 (= ${binary:Version}), ${misc:Depends}
@@ -124,7 +124,7 @@ Depends: libwww-perl,
          spawn-fcgi (>= 1.6.1),
          ${misc:Depends},
          ${shlibs:Depends}
-Recommends: ${misc:Recommends}, libapache2-mod-fastcgi
+Recommends: ${misc:Recommends}
 Conflicts: openjpip-server
 Description: JPIP server for JPEG 2000 files
  OpenJPIP software is an implementation of JPEG 2000 Part9: Interactivity tools,

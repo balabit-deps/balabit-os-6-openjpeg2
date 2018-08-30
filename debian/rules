@@ -36,6 +36,7 @@ pkg_lib3d = libopenjp3d$(SOVERSION)
 pkg_bin3d = libopenjp3d-tools
 pkg_jpip = libopenjpip$(SOVERSION)
 pkg_srv = libopenjpip-server
+pkg_vwr = libopenjpip-viewer
 pkg_dsrv = libopenjpip-dec-server
 
 override_dh_strip:
@@ -77,7 +78,7 @@ get-orig-source:
 export LD_LIBRARY_PATH := $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/:$(LD_LIBRARY_PATH)
 export PATH := $(CURDIR)/debian/tmp/usr/bin:$(PATH)
 
-VER_FULL=2.1.0
+VER_FULL = $(shell dpkg-parsechangelog -Sversion | cut -d - -f 1)
 
 debian/%.1: debian/opj_common.1.in
 	help2man --include=$< --output=$@ --name="Works with JPEG2000 files" \
@@ -85,12 +86,13 @@ debian/%.1: debian/opj_common.1.in
 
 opj_manpages: debian/opj_jp3d_decompress.1 debian/opj_jp3d_compress.1 debian/opj_jpip_addxml.1 debian/opj_jpip_test.1 debian/opj_jpip_transcode.1
 	echo "all missing man pages done"
-# todo:
-#debian/opj_dec_server.1 
-#debian/opj_server.1 
-#debian/opj_jpip_viewer.1
+
+# never returns:
+# debian/opj_dec_server.1 debian/opj_server.1 debian/opj_jpip_viewer.1
 
 override_dh_installman: opj_manpages
 	dh_installman -p$(pkg_lib3d) debian/opj_jp3d_*.1
 	dh_installman -p$(pkg_dsrv) debian/opj_jpip_*.1
+	#dh_installman -p$(pkg_srv) debian/opj_server.1
+	#dh_installman -p$(pkg_vwr) debian/opj_dec_server.1
 	#dh_installman

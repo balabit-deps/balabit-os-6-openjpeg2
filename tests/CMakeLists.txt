@@ -13,6 +13,7 @@ include_directories(
 # First thing define the common source:
 set(compare_images_SRCS compare_images.c
   ${OPENJPEG_SOURCE_DIR}/src/bin/jp2/convert.c
+  ${OPENJPEG_SOURCE_DIR}/src/bin/jp2/converttif.c
   ${OPENJPEG_SOURCE_DIR}/src/bin/common/opj_getopt.c
   )
 
@@ -78,6 +79,8 @@ add_test(NAME rta4 COMMAND j2k_random_tile_access tte4.j2k)
 set_property(TEST rta4 APPEND PROPERTY DEPENDS tte4)
 add_test(NAME rta5 COMMAND j2k_random_tile_access tte5.j2k)
 set_property(TEST rta5 APPEND PROPERTY DEPENDS tte5)
+
+add_executable(include_openjpeg include_openjpeg.c)
 
 # No image send to the dashboard if lib PNG is not available.
 if(NOT OPJ_HAVE_LIBPNG)

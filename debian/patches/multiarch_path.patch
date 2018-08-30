@@ -3,9 +3,9 @@ Description: Upstream did not handle multi-arch installation path
  installation.
 Author: Mathieu Malaterre <malat@debian.org>
 
---- openjpeg2-2.1.0.orig/cmake/OpenJPEGConfig.cmake.in
-+++ openjpeg2-2.1.0/cmake/OpenJPEGConfig.cmake.in
-@@ -26,7 +26,7 @@ get_filename_component(SELF_DIR "${CMAKE
+--- a/cmake/OpenJPEGConfig.cmake.in
++++ b/cmake/OpenJPEGConfig.cmake.in
+@@ -26,7 +26,7 @@
  if(EXISTS ${SELF_DIR}/OpenJPEGTargets.cmake)
    # This is an install tree
    include(${SELF_DIR}/OpenJPEGTargets.cmake)
