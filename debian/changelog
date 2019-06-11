@@ -1,3 +1,24 @@
+openjpeg2 (2.1.2-1.1+deb9u3build0.16.04.1) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: sync from Debian stretch-security
+
+ -- Steve Beattie <sbeattie@ubuntu.com>  Tue, 11 Jun 2019 15:34:16 -0700
+
+openjpeg2 (2.1.2-1.1+deb9u3) stretch-security; urgency=medium
+
+  * Non-maintainer upload by the Security Team.
+  * CVE-2018-14423: Division-by-zero vulnerabilities in the functions
+    pi_next_pcrl, pi_next_cprl, and pi_next_rpcl (closes: #904873).
+  * CVE-2018-6616: Excessive Iteration in opj_t1_encode_cblks
+    (closes: #889683).
+  * CVE-2017-17480: Write stack buffer overflow due to missing buffer
+    length formatter in fscanf call (closes: #884738).
+  * CVE-2018-18088: Null pointer dereference caused by null image
+    components in imagetopnm (closes: #910763).
+  * CVE-2018-5785: Integer overflow in convertbmp.c (closes: #888533).
+
+ -- Luciano Bello <luciano@debian.org>  Thu, 07 Mar 2019 16:41:30 -0500
+
 openjpeg2 (2.1.2-1.1+deb9u2build0.1) xenial-security; urgency=medium
 
   * SECURITY UPDATE: sync from Debian stretch-security
