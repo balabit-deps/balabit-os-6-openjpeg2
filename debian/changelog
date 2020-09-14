@@ -1,8 +1,36 @@
-openjpeg2 (2.1.2-1.1+deb9u3build0.16.04.1) xenial-security; urgency=medium
+openjpeg2 (2.1.2-1.1+deb9u5build0.16.04.1) xenial-security; urgency=medium
 
-  * SECURITY UPDATE: sync from Debian stretch-security
+  * fake sync from Debian
 
- -- Steve Beattie <sbeattie@ubuntu.com>  Tue, 11 Jun 2019 15:34:16 -0700
+ -- Mike Salvatore <mike.salvatore@canonical.com>  Mon, 14 Sep 2020 12:31:30 -0400
+
+openjpeg2 (2.1.2-1.1+deb9u5) stretch-security; urgency=high
+
+  * Non-maintainer upload by the LTS team.
+  * Fix CVE-2020-15389: opj_decompress: fix double-free
+    on input directory with mix of valid and invalid image.
+  * Fix CVE-2020-8112: opj_tcd_init_tile(): avoid integer
+    overflow. (Closes: #950184)
+  * Fix CVE-2020-6851: opj_j2k_update_image_dimensions(): reject
+    images whose coordinates are beyond INT_MAX. (Closes: #950000)
+  * Fix CVE-2019-12973: convertbmp: detect invalid file dimensions
+    early and bmp_read_rle4_data(): avoid potential infinite loop.
+    (Closes: #931292)
+
+ -- Utkarsh Gupta <utkarsh@debian.org>  Fri, 10 Jul 2020 21:04:00 +0530
+
+openjpeg2 (2.1.2-1.1+deb9u4) stretch; urgency=medium
+
+  * Non-maintainer upload.
+  * CVE-2018-21010: heap buffer overflow in color_apply_icc_profile
+    (Closes: #939553).
+  * CVE-2018-20847: improper computation of values in the function
+    opj_get_encoding_parameters, leading to an integer overflow
+    (Closes: #931294).
+  * CVE-2016-9112: floating point exception or divide by zero in the
+    function opj_pi_next_cprl (Closes: #844551).
+
+ -- Hugo Lefeuvre <hle@debian.org>  Tue, 08 Oct 2019 15:20:27 +0200
 
 openjpeg2 (2.1.2-1.1+deb9u3) stretch-security; urgency=medium
 
@@ -18,13 +46,6 @@ openjpeg2 (2.1.2-1.1+deb9u3) stretch-security; urgency=medium
   * CVE-2018-5785: Integer overflow in convertbmp.c (closes: #888533).
 
  -- Luciano Bello <luciano@debian.org>  Thu, 07 Mar 2019 16:41:30 -0500
-
-openjpeg2 (2.1.2-1.1+deb9u2build0.1) xenial-security; urgency=medium
-
-  * SECURITY UPDATE: sync from Debian stretch-security
-    - Ubuntu changes were applied upstream, so dropping.
-
- -- Eduardo Barretto <eduardo.barretto@canonical.com>  Thu, 30 Aug 2018 15:03:28 -0300
 
 openjpeg2 (2.1.2-1.1+deb9u2) stretch-security; urgency=medium
 
@@ -77,24 +98,6 @@ openjpeg2 (2.1.1-1) unstable; urgency=medium
   * Bump Std-Vers to 3.9.8, no changes needed
 
  -- Mathieu Malaterre <malat@debian.org>  Mon, 11 Jul 2016 09:28:19 +0200
-
-openjpeg2 (2.1.0-2.1ubuntu0.1) xenial-security; urgency=medium
-
-  * SECURITY UPDATE: Out-of-bound heap write possible resulting
-    in heap corruption and arbitrary code execution (lp: #1630702)
-    - debian/patches/CVE-2016-8332.patch: fix incrementing of
-      "l_tcp->m_nb_mcc_records" in opj_j2k_read_mcc
-      in src/lib/openjp2/j2k.c.
-    - CVE-2016-8332
-  * SECURITY UPDATE: Integer overflow possible resulting in
-    arbitrary code execution via a crafted JP2 file,
-    triggering out-of-bound read or write (lp: #1630702)
-    - debian/patches/CVE-2016-7163.patch: fix an integer
-      overflow issue in function opj_pi_create_decode of
-      pi.c in src/lib/openjp2/pi.c.
-    - CVE-2016-7163
-
- -- Nikita Yerenkov-Scott <cooks.go.hungry@gmail.com>  Sat, 08 Oct 2016 16:10:43 +0100
 
 openjpeg2 (2.1.0-2.1) unstable; urgency=high
 
