@@ -1,8 +1,25 @@
-openjpeg2 (2.1.2-1.1+deb9u5build0.16.04.1) xenial-security; urgency=medium
+openjpeg2 (2.1.2-1.1+deb9u6build0.16.04.1) xenial-security; urgency=medium
 
   * fake sync from Debian
 
- -- Mike Salvatore <mike.salvatore@canonical.com>  Mon, 14 Sep 2020 12:31:30 -0400
+ -- Eduardo Barretto <eduardo.barretto@canonical.com>  Mon, 15 Mar 2021 11:35:23 +0100
+
+openjpeg2 (2.1.2-1.1+deb9u6) stretch-security; urgency=medium
+
+  * Non-maintainer upload by the LTS Security Team.
+  * Fix CVE-2020-27814: A heap-buffer overflow in the way openjpeg2
+    handled certain PNG format files.
+  * Fix CVE-2020-27823: Wrong computation of x1,y1 if -d option is used,
+    resulting in heap buffer overflow.
+  * Fix CVE-2020-27824: avoid global buffer overflow on irreversible conversion when
+    too many decomposition levels are specified.
+  * Fix CVE-2020-27841: crafted input to be processed by the openjpeg encoder
+    could cause an out-of-bounds read.
+  * Fix CVE-2020-27844: crafted input to be processed by the openjpeg encoder
+    could cause an out-of-bounds write.
+  * Fix CVE-2020-27845: crafted input can cause out-of-bounds-read.
+
+ -- Brian May <bam@debian.org>  Thu, 04 Feb 2021 08:18:38 +1100
 
 openjpeg2 (2.1.2-1.1+deb9u5) stretch-security; urgency=high
 
